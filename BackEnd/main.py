@@ -84,11 +84,18 @@ class RAGQuery(BaseModel):
 @api.post('/rag/')
 def rag_chat(query: RAGQuery):
     try:
-        pdf_path = r"c:\Users\hnana\Downloads\microsoft-annual-report.pdf"
+        pdf_files = [
+            r"c:\Users\hnana\Downloads\microsoft-annual-report.pdf",
+            r"c:c:\Users\hnana\Downloads\Hands-On Large Language Models Language Understanding and Generation (Jay Alammar, Maarten Grootendorst) .pdf"
+        ]
+
         output_dir = r"c:\Users\hnana\Downloads\rag_texts"
 
-        txt_path = pdf_to_txt(pdf_path, output_dir)
+        for pdf_path in pdf_files:
+            pdf_to_txt(pdf_path, output_dir)
+
         prepare_documents(output_dir)
+
         relevant_chunks = query_documents(query.question)
         answer = generate_response(query.question, relevant_chunks)
 
